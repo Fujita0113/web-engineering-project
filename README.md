@@ -33,8 +33,13 @@ One author has many posts; one post belongs to one author. At the start the data
 
 | Table | Columns |
 |-------|---------|
-| **Users** | id, username, password, created_at |
+| **Users** | id, username (unique), password, date_joined |
 | **Posts** | id, title, content, created_at, author_id (FK → Users) |
+
+Implemented as a custom `accounts.User` model (extends Django's `AbstractUser`),
+so `date_joined` serves as the account creation timestamp and `password` is
+stored hashed. `Posts.created_at` is set automatically on creation, and posts
+are ordered newest-first.
 
 **Relationships:**  
 One User has many Posts (1:N)
