@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'blog',
 ]
 
+# Use a custom user model so the "Users" entity can be extended later.
+# Must be set before the first migration.
+AUTH_USER_MODEL = 'accounts.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
