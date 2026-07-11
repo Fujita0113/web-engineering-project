@@ -8,31 +8,43 @@ in one shared space. It consists of a browser UI, server-side logic
 
 ### Current state
 
-A skeleton without Django yet. Only `main.py` and dev tools (pytest / ruff) exist.
+Runnable Django project with the database schema in place. `config/` holds the
+project settings, and two apps (`accounts`, `blog`) define the `User` and `Post`
+models. Migrations are created and applied (SQLite). Views/templates are not
+built yet.
 
 ## Tech stack
 
 - Python 3.12+ (managed via `.python-version`)
 - Package manager: **uv**
-- Framework: Django (not yet installed; planned)
-  - 最新安定版 6.0.x / LTS 5.2.x（PyPI 確認: 2026-06-24 時点）。
-    導入時は `uv add` 直前に最新版を再確認し、`>=` でメジャー上限を固定すること。
+- Framework: Django 6.0.7 (pinned `Django>=6.0,<7.0` in `pyproject.toml`)
+  - Requires Python 3.12+. Re-check the latest patch before upgrading and keep
+    the major upper bound pinned with `<7.0`.
 - Testing: pytest / pytest-cov
 - Linter / Formatter: ruff
 
 ## Data model
 
-| Table     | Columns                                          |
-|-----------|--------------------------------------------------|
-| **Users** | id, username (unique), password, created_at      |
-| **Posts** | id, title, content, created_at, author_id (FK)   |
+| Table     | Columns                                              |
+|-----------|------------------------------------------------------|
+| **Users** | id, username (unique), password, date_joined         |
+| **Posts** | id, title, content, created_at, author_id (FK)       |
 
 Relationship: User 1 : N Post
 
-## App structure (planned, once Django is added)
+- `Users` is a custom model `accounts.User` extending `AbstractUser`
+  (`AUTH_USER_MODEL = 'accounts.User'`); `date_joined` is the creation timestamp
+  and `password` is stored hashed.
+- `Posts` lives in the `blog` app; `created_at` uses `auto_now_add`, and the
+  default ordering is newest-first (`ordering = ['-created_at']`).
 
-- `blog/` — post feed, author filter, date filter, pagination
-- `accounts/` — user registration, login, logout
+## App structure
+
+- `config/` — project settings, root URLconf, WSGI/ASGI entry points
+- `blog/` — `Post` model (done); post feed, author filter, date filter,
+  pagination (planned)
+- `accounts/` — custom `User` model (done); user registration, login, logout
+  (planned)
 
 ## Commands
 
