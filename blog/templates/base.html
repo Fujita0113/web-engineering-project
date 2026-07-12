@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}The Blogs{% endblock %}</title>
+</head>
+<body>
+  <header>
+    <h1><a href="{% url 'blog:post_list' %}">The Blogs</a></h1>
+    <nav>
+      <a href="{% url 'blog:post_list' %}">All posts</a> |
+      <a href="{% url 'blog:author_list' %}">Authors</a> |
+      <a href="{% url 'blog:posts_by_author' %}">Search by author</a>
+    </nav>
+  </header>
+  <hr>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

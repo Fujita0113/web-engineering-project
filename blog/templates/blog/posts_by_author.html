@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Posts by author{% endblock %}
+{% block content %}
+<h2>Search posts by author</h2>
+<form method="get" action="{% url 'blog:posts_by_author' %}">
+  <input type="text" name="author" value="{{ author }}" placeholder="author username">
+  <button type="submit">Search</button>
+</form>
+
+{% if author %}
+  <h3>Posts by {{ author }}</h3>
+  <ul>
+    {% for post in posts %}
+      <li>{{ post.created_at|date:"Y-m-d" }} &mdash; {{ post.title }}</li>
+    {% empty %}
+      <li>No posts found for "{{ author }}".</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endblock %}

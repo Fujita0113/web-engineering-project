@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 from accounts.models import User
 
@@ -8,26 +8,21 @@ from .models import Post
 def post_list(request):
     """All posts, newest first (Post.Meta orders by -created_at)."""
     posts = Post.objects.all()
-    lines = [f"{p.created_at:%Y-%m-%d} | {p.title} | {p.author}" for p in posts]
-    body = "All posts (newest first):\n\n" + "\n".join(lines)
-    return HttpResponse(body, content_type="text/plain; charset=utf-8")
+    return render(request, "blog/post_list.html", {"posts": posts})
 
 
 def author_list(request):
     """List of all authors."""
     authors = User.objects.all()
-    body = "Authors:\n\n" + "\n".join(str(a) for a in authors)
-    return HttpResponse(body, content_type="text/plain; charset=utf-8")
+    return render(request, "blog/author_list.html", {"authors": authors})
 
 
 def posts_by_author(request):
-    """Posts by a single author.
+    """Posts by a single author, chosen via the `?author=` GET parameter.
 
-    Exercise 6: the author name is hard-coded for now; it will become a
-    URL argument in a later exercise.
+    Replaces the Exercise 6 stub (hard-coded author): the author name now comes
+    from user input. With no author given, only the search form is shown.
     """
-    author_name = "alice"
-    posts = Post.objects.filter(author__username=author_name)
-    lines = [f"{p.created_at:%Y-%m-%d} | {p.title}" for p in posts]
-    body = f"Posts by {author_name}:\n\n" + "\n".join(lines)
-    return HttpResponse(body, content_type="text/plain; charset=utf-8")
+    author = request.GET.get("author", "").strip()
+    posts = Post.objects.filter(author__username=author) if author else Post.objects.none()
+    return render(request, "blog/posts_by_author.html", {"author": author, "posts": posts})

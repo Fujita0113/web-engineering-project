@@ -94,21 +94,22 @@ One User has many Posts (1:N)
 
 ---
 
-## API (URLs) — Exercise 6
+## API (URLs) — Exercises 6 & 8
 
-First basic view functions, wired in `blog/urls.py` (included at the site root).
-Views are intentionally minimal: plain-text output, some values hard-coded.
+View functions wired in `blog/urls.py` (included at the site root). Pages render
+minimal HTML templates (`blog/templates/`, extending `base.html`). Author search
+takes real user input via a GET form (Exercise 8 replaced the hard-coded stub).
 
 | Method & URL | View | Arguments | Returns |
 |--------------|------|-----------|---------|
-| `GET /` | `blog.views.post_list` | none | All posts, newest first (`date | title | author` per line) |
-| `GET /authors/` | `blog.views.author_list` | none | One author name per line |
-| `GET /by-author/` | `blog.views.posts_by_author` | none (author `"alice"` hard-coded for now) | Posts by that author (`date | title` per line) |
+| `GET /` | `blog.views.post_list` | none | HTML list of all posts, newest first; author names link to their posts |
+| `GET /authors/` | `blog.views.author_list` | none | HTML list of authors, each linking to their posts |
+| `GET /by-author/` | `blog.views.posts_by_author` | `author` (query string, e.g. `?author=alice`) | Search form + that author's posts; with no `author`, only the form. Unknown author shows "no posts found" |
 
-All three return an `HttpResponse` with `Content-Type: text/plain`.
+All three return an HTML `HttpResponse` rendered from templates.
 
-Not implemented yet (later exercises): pagination, dynamic author/date filters
-from URL arguments, authentication, and post creation.
+Not implemented yet (later exercises): pagination, date filter, authentication,
+and POST forms (registration, login, post creation).
 
 ---
 
