@@ -4,21 +4,15 @@
 <h2>Search posts by author</h2>
 <form class="search-form" method="get" action="{% url 'blog:posts_by_author' %}">
   <label class="visually-hidden" for="author">Author username</label>
-  <input type="text" id="author" name="author" value="{{ author }}" placeholder="author username">
+  <input type="text" id="author" name="author" value="{{ author }}"
+         placeholder="author username"
+         hx-get="{% url 'blog:posts_by_author' %}"
+         hx-trigger="keyup changed delay:300ms, search"
+         hx-target="#search-results">
   <button type="submit">Search</button>
 </form>
 
-{% if author %}
-  <h3>Posts by {{ author }}</h3>
-  <ul class="post-list">
-    {% for post in posts %}
-      <li>
-        <span class="post-date">{{ post.created_at|date:"Y-m-d" }}</span>
-        <span class="post-title">{{ post.title }}</span>
-      </li>
-    {% empty %}
-      <li>No posts found for "{{ author }}".</li>
-    {% endfor %}
-  </ul>
-{% endif %}
+<div id="search-results">
+  {% include "blog/_post_results.html" %}
+</div>
 {% endblock %}

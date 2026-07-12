@@ -1,0 +1,17 @@
+{% comment %}
+Author-search results fragment. Rendered on its own for HTMX requests
+(swapped into #search-results) and {% include %}d in the full page.
+{% endcomment %}
+{% if author %}
+  <h3>Posts by {{ author }}</h3>
+  <ul class="post-list">
+    {% for post in posts %}
+      <li>
+        <span class="post-date">{{ post.created_at|date:"Y-m-d" }}</span>
+        <span class="post-title">{{ post.title }}</span>
+      </li>
+    {% empty %}
+      <li>No posts found for "{{ author }}".</li>
+    {% endfor %}
+  </ul>
+{% endif %}
