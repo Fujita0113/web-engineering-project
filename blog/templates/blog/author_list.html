@@ -2,7 +2,7 @@
 {% block title %}Authors{% endblock %}
 {% block content %}
 <h2>Authors</h2>
-<ul>
+<ul class="author-list">
   {% for author in authors %}
     <li><a href="{% url 'blog:posts_by_author' %}?author={{ author.username }}">{{ author }}</a></li>
   {% empty %}

@@ -2,16 +2,20 @@
 {% block title %}Posts by author{% endblock %}
 {% block content %}
 <h2>Search posts by author</h2>
-<form method="get" action="{% url 'blog:posts_by_author' %}">
-  <input type="text" name="author" value="{{ author }}" placeholder="author username">
+<form class="search-form" method="get" action="{% url 'blog:posts_by_author' %}">
+  <label class="visually-hidden" for="author">Author username</label>
+  <input type="text" id="author" name="author" value="{{ author }}" placeholder="author username">
   <button type="submit">Search</button>
 </form>
 
 {% if author %}
   <h3>Posts by {{ author }}</h3>
-  <ul>
+  <ul class="post-list">
     {% for post in posts %}
-      <li>{{ post.created_at|date:"Y-m-d" }} &mdash; {{ post.title }}</li>
+      <li>
+        <span class="post-date">{{ post.created_at|date:"Y-m-d" }}</span>
+        <span class="post-title">{{ post.title }}</span>
+      </li>
     {% empty %}
       <li>No posts found for "{{ author }}".</li>
     {% endfor %}

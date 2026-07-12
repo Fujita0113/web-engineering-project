@@ -1,0 +1,145 @@
+/* The Blogs — base stylesheet (Ex9)
+   Structure lives in the templates; all presentation lives here. */
+
+:root {
+  --text: #1a1a1a;
+  --muted: #555;
+  --accent: #1a5fb4;   /* AA contrast on white: ~7:1 */
+  --border: #d0d0d0;
+  --bg: #ffffff;
+  --max-width: 45rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* Skip link: off-screen until focused */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Fluid container shared by header and main */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding-block: 0.75rem;
+}
+.site-header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+}
+.site-header h1 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* Nav as a real list; layout via flexbox, wraps on small screens */
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+main {
+  padding-block: 1.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+/* Post / author lists: no bullets, spacing instead of inline dashes */
+.post-list,
+.author-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.post-list li,
+.author-list li {
+  padding-block: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.post-list .post-date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.5rem;
+}
+.post-list .post-title {
+  font-weight: 600;
+}
+
+/* Search form */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.search-form input[type="text"] {
+  flex: 1 1 12rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font: inherit;
+}
+.search-form button {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  border-radius: 4px;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Visually hidden but available to screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+@media (max-width: 30rem) {
+  .site-header h1 {
+    font-size: 1.3rem;
+  }
+  main {
+    padding-block: 1rem;
+  }
+}
