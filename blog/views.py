@@ -25,4 +25,8 @@ def posts_by_author(request):
     """
     author = request.GET.get("author", "").strip()
     posts = Post.objects.filter(author__username=author) if author else Post.objects.none()
-    return render(request, "blog/posts_by_author.html", {"author": author, "posts": posts})
+    context = {"author": author, "posts": posts}
+    # HTMX requests get only the results fragment; browsers get the full page.
+    if request.headers.get("HX-Request"):
+        return render(request, "blog/_post_results.html", context)
+    return render(request, "blog/posts_by_author.html", context)
