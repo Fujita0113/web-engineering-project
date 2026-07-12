@@ -94,6 +94,24 @@ One User has many Posts (1:N)
 
 ---
 
+## API (URLs) — Exercise 6
+
+First basic view functions, wired in `blog/urls.py` (included at the site root).
+Views are intentionally minimal: plain-text output, some values hard-coded.
+
+| Method & URL | View | Arguments | Returns |
+|--------------|------|-----------|---------|
+| `GET /` | `blog.views.post_list` | none | All posts, newest first (`date | title | author` per line) |
+| `GET /authors/` | `blog.views.author_list` | none | One author name per line |
+| `GET /by-author/` | `blog.views.posts_by_author` | none (author `"alice"` hard-coded for now) | Posts by that author (`date | title` per line) |
+
+All three return an `HttpResponse` with `Content-Type: text/plain`.
+
+Not implemented yet (later exercises): pagination, dynamic author/date filters
+from URL arguments, authentication, and post creation.
+
+---
+
 ## Note on the User Interface
 
 The main screen is a vertical feed of posts, newest first, each showing the title, author name, date, and a part of the text. Author names are links to that author's posts. A date filter lets the user pick a day. Next and Previous links are shown for pagination. In the header there is a login and register area; when logged in, a form for a new post (title and text) is available.
