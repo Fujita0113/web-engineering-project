@@ -2,10 +2,11 @@
 {% block title %}All posts{% endblock %}
 {% block content %}
 <h2>All posts (newest first)</h2>
-<ul>
+<ul class="post-list">
   {% for post in posts %}
     <li>
-      {{ post.created_at|date:"Y-m-d" }} &mdash; <strong>{{ post.title }}</strong>
+      <span class="post-date">{{ post.created_at|date:"Y-m-d" }}</span>
+      <span class="post-title">{{ post.title }}</span>
       by <a href="{% url 'blog:posts_by_author' %}?author={{ post.author.username }}">{{ post.author }}</a>
     </li>
   {% empty %}
