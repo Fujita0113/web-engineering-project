@@ -2,13 +2,14 @@
 {% block title %}Posts by author{% endblock %}
 {% block content %}
 <h2>Search posts by author</h2>
-<form class="search-form" method="get" action="{% url 'blog:posts_by_author' %}">
+<form class="search-form" method="get" action="{% url 'blog:posts_by_author' %}"
+      hx-get="{% url 'blog:posts_by_author' %}"
+      hx-trigger="keyup changed delay:300ms from:#author, change from:#date, submit"
+      hx-target="#search-results">
   <label class="visually-hidden" for="author">Author username</label>
-  <input type="text" id="author" name="author" value="{{ author }}"
-         placeholder="author username"
-         hx-get="{% url 'blog:posts_by_author' %}"
-         hx-trigger="keyup changed delay:300ms, search"
-         hx-target="#search-results">
+  <input type="text" id="author" name="author" value="{{ author }}" placeholder="author username">
+  <label class="visually-hidden" for="date">Date</label>
+  <input type="date" id="date" name="date" value="{{ date }}">
   <button type="submit">Search</button>
 </form>
 

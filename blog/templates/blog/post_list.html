@@ -2,6 +2,12 @@
 {% block title %}All posts{% endblock %}
 {% block content %}
 <h2>All posts (newest first)</h2>
+<form class="date-filter" method="get" action="{% url 'blog:post_list' %}">
+  <label for="date">Date</label>
+  <input type="date" id="date" name="date" value="{{ date }}">
+  <button type="submit">Filter</button>
+  {% if date %}<a href="{% url 'blog:post_list' %}">Clear</a>{% endif %}
+</form>
 <ul class="post-list">
   {% for post in posts %}
     <li>
@@ -10,7 +16,8 @@
       by <a href="{% url 'blog:posts_by_author' %}?author={{ post.author.username }}">{{ post.author }}</a>
     </li>
   {% empty %}
-    <li>No posts yet.</li>
+    <li>No posts{% if date %} on {{ date }}{% endif %}.</li>
   {% endfor %}
 </ul>
+{% include "blog/_pagination.html" with url_name="blog:post_list" %}
 {% endblock %}
