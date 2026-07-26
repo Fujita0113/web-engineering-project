@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 
 from accounts.models import User
 
+from .forms import PostForm
 from .models import Post
 
 
@@ -30,3 +32,19 @@ def posts_by_author(request):
     if request.headers.get("HX-Request"):
         return render(request, "blog/_post_results.html", context)
     return render(request, "blog/posts_by_author.html", context)
+
+
+@login_required
+def post_create(request):
+    """Create a post as the logged-in user. Anonymous requests are redirected
+    to the login page by @login_required (both GET and POST)."""
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect("blog:post_list")
+    else:
+        form = PostForm()
+    return render(request, "blog/post_form.html", {"form": form})
