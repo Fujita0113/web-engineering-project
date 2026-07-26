@@ -18,6 +18,18 @@
           <li><a href="{% url 'blog:post_list' %}">All posts</a></li>
           <li><a href="{% url 'blog:author_list' %}">Authors</a></li>
           <li><a href="{% url 'blog:posts_by_author' %}">Search by author</a></li>
+          {% if user.is_authenticated %}
+            <li>{{ user.username }}</li>
+            <li>
+              <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit">Log out</button>
+              </form>
+            </li>
+          {% else %}
+            <li><a href="{% url 'accounts:login' %}">Log in</a></li>
+            <li><a href="{% url 'accounts:register' %}">Register</a></li>
+          {% endif %}
         </ul>
       </nav>
     </div>

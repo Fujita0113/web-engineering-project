@@ -46,6 +46,10 @@ INSTALLED_APPS = [
 # Must be set before the first migration.
 AUTH_USER_MODEL = 'accounts.User'
 
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'blog:post_list'
+LOGOUT_REDIRECT_URL = 'blog:post_list'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
