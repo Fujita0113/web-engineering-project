@@ -116,3 +116,48 @@ and POST forms (registration, login, post creation).
 ## Note on the User Interface
 
 The main screen is a vertical feed of posts, newest first, each showing the title, author name, date, and a part of the text. Author names are links to that author's posts. A date filter lets the user pick a day. Next and Previous links are shown for pagination. In the header there is a login and register area; when logged in, a form for a new post (title and text) is available.
+
+---
+
+## Deployment — Exercise 11
+
+### Production decisions
+
+| Question | Decision |
+|----------|----------|
+| Hosting | [Render.com](https://render.com/) Free Web Service |
+| Application server | `waitress` (WSGI) |
+| Static files (CSS/JS) | `whitenoise`, with `collectstatic` run at build time and `CompressedManifestStaticFilesStorage` in production |
+| Uploaded/media files | Not applicable — no `FileField`/`ImageField` exists in the current models (`Users`, `Posts`) |
+| Database | SQLite for local development; Postgres (Render Free instance, via `dj-database-url` + `DATABASE_URL`) in production, since Render's Free web service disk is ephemeral |
+
+### Environment variables (production)
+
+| Variable | Purpose |
+|----------|---------|
+| `SECRET_KEY` | Django secret key |
+| `DEBUG` | Set to `False` |
+| `ALLOWED_HOSTS` | Comma-separated hostnames (Render also auto-provides `RENDER_EXTERNAL_HOSTNAME`) |
+| `DATABASE_URL` | Set automatically by Render when a Postgres instance is attached |
+
+### Deploy steps (Render.com)
+
+1. Push this repository to GitHub (already the case).
+2. In the Render dashboard, create a **PostgreSQL** instance (Free tier).
+3. Create a **Web Service** from this GitHub repo:
+   - Build command: `bash build.sh`
+   - Start command: `bash run.sh`
+   - Add env vars `SECRET_KEY`, `DEBUG=False`, `ALLOWED_HOSTS` (or rely on `RENDER_EXTERNAL_HOSTNAME`)
+   - Attach the Postgres instance so `DATABASE_URL` is set automatically
+4. Deploy. `build.sh` runs `uv sync`, `collectstatic`, and `migrate`; `run.sh` starts `waitress-serve`.
+
+### Local production-mode smoke test
+
+```pwsh
+$env:DEBUG = "False"
+$env:ALLOWED_HOSTS = "127.0.0.1"
+$env:SECRET_KEY = "local-test-secret"
+uv run python manage.py collectstatic --no-input
+uv run python manage.py migrate
+uv run waitress-serve --port=8000 config.wsgi:application
+```
