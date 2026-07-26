@@ -19,6 +19,7 @@
           <li><a href="{% url 'blog:author_list' %}">Authors</a></li>
           <li><a href="{% url 'blog:posts_by_author' %}">Search by author</a></li>
           {% if user.is_authenticated %}
+            <li><a href="{% url 'blog:post_create' %}">New post</a></li>
             <li>{{ user.username }}</li>
             <li>
               <form method="post" action="{% url 'accounts:logout' %}">
