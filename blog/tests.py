@@ -48,6 +48,26 @@ class PostCreateTests(TestCase):
         self.assertContains(response, "<form")
 
 
+class PostDetailTests(TestCase):
+    def setUp(self):
+        self.author = User.objects.create_user(username="ivan", password="a-strong-passw0rd")
+        self.post = Post.objects.create(title="Full post", content="The full body text.", author=self.author)
+
+    def test_detail_page_shows_full_content(self):
+        response = self.client.get(reverse("blog:post_detail", args=[self.post.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Full post")
+        self.assertContains(response, "The full body text.")
+
+    def test_unknown_post_returns_404(self):
+        response = self.client.get(reverse("blog:post_detail", args=[self.post.pk + 999]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_list_links_to_detail_page(self):
+        response = self.client.get(reverse("blog:post_list"))
+        self.assertContains(response, reverse("blog:post_detail", args=[self.post.pk]))
+
+
 class PostListPaginationTests(TestCase):
     """POSTS_PER_PAGE = 5; 12 posts split into pages of 5, 5, 2."""
 

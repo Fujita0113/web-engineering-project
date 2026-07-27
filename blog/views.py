@@ -6,7 +6,7 @@ from accounts.models import User
 
 from .forms import PostForm
 from .models import Post
-from .selectors import get_posts
+from .selectors import get_post, get_posts
 from .services import paginate
 
 
@@ -24,6 +24,12 @@ def post_list(request):
     posts = paginate(get_posts(date=date), request.GET.get("page"))
     context = {"posts": posts, "date": date_str, "querystring": _querystring_without_page(request)}
     return render(request, "blog/post_list.html", context)
+
+
+def post_detail(request, pk):
+    """The full content of a single post."""
+    post = get_post(pk)
+    return render(request, "blog/post_detail.html", {"post": post})
 
 
 def author_list(request):
