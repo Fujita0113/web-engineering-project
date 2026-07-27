@@ -1,4 +1,11 @@
+from django.shortcuts import get_object_or_404
+
 from .models import Post
+
+
+def get_post(pk):
+    """A single post by primary key, or a 404 if it doesn't exist."""
+    return get_object_or_404(Post, pk=pk)
 
 
 def get_posts(author=None, date=None):
